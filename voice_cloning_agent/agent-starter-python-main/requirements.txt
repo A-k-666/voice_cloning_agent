@@ -1,7 +1,0 @@
-livekit-agents~=1.2
-livekit-plugins-openai
-livekit-plugins-assemblyai
-python-dotenv
-requests
-pydub
-numpy
