@@ -1,0 +1,7 @@
+# Copy this file to .env.local and fill values
+LIVEKIT_URL=
+LIVEKIT_API_KEY=
+LIVEKIT_API_SECRET=
+
+# Optional: Next.js debug logs
+# DEBUG=*
