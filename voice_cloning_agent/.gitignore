@@ -1,0 +1,43 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Audio files / generated artifacts
+generated_audio/
+agent-starter-python-main/recordings/
+agent-starter-python-main/generated_audio/
+agent-starter-python-main/tts_debug_audio/
+*.mp3
+*.wav
+*.m4a
+*.flac
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+*.md
+!README.md
+
+
+
+
+
+

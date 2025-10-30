@@ -1,0 +1,10 @@
+# Copy to .env.local (or .env) and fill values
+LIVEKIT_URL=
+LIVEKIT_API_KEY=
+LIVEKIT_API_SECRET=
+
+SPEECHIFY_API_KEY=
+OPENAI_API_KEY=
+
+# Optional
+# LOG_LEVEL=INFO
