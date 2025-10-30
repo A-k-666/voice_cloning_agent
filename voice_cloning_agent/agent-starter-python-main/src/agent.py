@@ -453,8 +453,8 @@ async def handle_voice_cloning(agent: VoiceCloningAgent, session: AgentSession, 
     try:
         agent.state = "cloning"
         
-        # Announce processing
-        await session.say("Your voice is being processed. Please wait...", allow_interruptions=False)
+        # Announce processing (allow interruptions to prevent runtime errors)
+        await session.say("Your voice is being processed. Please wait...", allow_interruptions=True)
         
         # Build consent JSON via LLM (safe defaults)
         consent_json = await _generate_consent_json(llm, last_user_text or "")
@@ -484,8 +484,8 @@ async def handle_voice_cloning(agent: VoiceCloningAgent, session: AgentSession, 
             checks_done += 1
             
             if not cloning_task.done():
-                # Periodic update every 10 seconds (still using default voice until cloning completes)
-                await session.say("Your voice is still being processed. Please continue waiting...", allow_interruptions=False)
+                # Periodic update every 10 seconds (allow interruptions)
+                await session.say("Your voice is still being processed. Please continue waiting...", allow_interruptions=True)
         
         # Note: Once cloning_task completes, we'll update TTS to cloned voice (see below)
         
@@ -506,16 +506,16 @@ async def handle_voice_cloning(agent: VoiceCloningAgent, session: AgentSession, 
             session._tts = cloned_tts  # Internal update (LiveKit handles format conversion)
             logger.info(f"✅ Voice cloned and TTS updated to cloned voice: {voice_id}")
             
-            # Announce using cloned voice
-            await session.say("Your voice has been cloned! Let's try speaking now.", allow_interruptions=False)
+            # Announce using cloned voice (allow interruptions to prevent runtime errors)
+            await session.say("Your voice has been cloned! Let's try speaking now.", allow_interruptions=True)
             logger.info(f"✅ Voice cloned: {voice_id}")
         else:
-            await session.say("Sorry, voice cloning failed. Please try again.", allow_interruptions=False)
+            await session.say("Sorry, voice cloning failed. Please try again.", allow_interruptions=True)
             agent.state = "greeting"
             
     except Exception as e:
         logger.error(f"❌ Cloning failed: {e}")
-        await session.say("Sorry, an error occurred. Please try again.", allow_interruptions=False)
+        await session.say("Sorry, an error occurred. Please try again.", allow_interruptions=True)
         agent.state = "greeting"
 
 
@@ -588,7 +588,7 @@ async def entrypoint(ctx: JobContext):
     # Initial greeting with full instructions
     agent.state = "greeting"
     greeting = "Hi! I am voice cloning agent. Speak for 10 to 30 seconds for your voice cloning."
-    await session.say(greeting, allow_interruptions=False)
+    await session.say(greeting, allow_interruptions=True)
     await asyncio.sleep(1)
     
     # Immediately start recording (no countdown)
@@ -596,7 +596,7 @@ async def entrypoint(ctx: JobContext):
     
     # Start recording directly
     agent.state = "recording"
-    await session.say("Recording started - you can speak now.", allow_interruptions=False)
+    await session.say("Recording started - you can speak now.", allow_interruptions=True)
     logger.info("🎙️ Recording started - user should speak now")
     await asyncio.sleep(0.5)
     
@@ -605,13 +605,13 @@ async def entrypoint(ctx: JobContext):
     
     if sample_path:
         agent.recording_path = sample_path
-        await session.say("Thanks! Processing your voice...", allow_interruptions=False)
+        await session.say("Thanks! Processing your voice...", allow_interruptions=True)
         
         # Start cloning in background with LLM-built consent (US accent)
         # Pass the most recent user text if available from STT transcript cache (not stored here), so pass empty.
         asyncio.create_task(handle_voice_cloning(agent, session, sample_path, speechify_client, llm, last_user_text=""))
     else:
-        await session.say("Recording failed. Please try again.", allow_interruptions=False)
+        await session.say("Recording failed. Please try again.", allow_interruptions=True)
         agent.state = "greeting"
     
     # Room already connected at the start, no need to connect again
