@@ -1,7 +1,26 @@
+# LiveKit Agents Core
 livekit-agents~=1.2
 livekit-plugins-openai
 livekit-plugins-assemblyai
-python-dotenv
-requests
-pydub
-numpy
+livekit-plugins-silero
+livekit-plugins-speechify
+
+# HTTP & API Clients
+aiohttp>=3.9.0
+requests>=2.31.0
+
+# Environment & Config
+python-dotenv>=1.0.0
+
+# Audio Processing
+numpy>=1.24.0
+pydub>=0.25.1
+scipy>=1.10.0
+
+# Optional: Better audio quality (requires 64-bit Python)
+# noise-cancellation>=0.1.0
+
+# Development & Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+ruff>=0.1.0
